@@ -29,6 +29,70 @@ region_enabled = true
 region_rect = Rect2( 0, 0, 4096, 4096 )
 _sections_unfolded = [ "Offset", "Region", "Transform" ]
 
+[node name="Camera2D" type="Camera2D" parent="."]
+
+position = Vector2( 2051.62, 2453.15 )
+anchor_mode = 1
+rotating = false
+current = true
+zoom = Vector2( 1, 1 )
+limit_left = -10000000
+limit_top = -10000000
+limit_right = 10000000
+limit_bottom = 10000000
+limit_smoothed = false
+drag_margin_h_enabled = true
+drag_margin_v_enabled = true
+smoothing_enabled = true
+smoothing_speed = 5.0
+drag_margin_left = 0.2
+drag_margin_top = 0.2
+drag_margin_right = 0.2
+drag_margin_bottom = 0.2
+editor_draw_screen = true
+editor_draw_limits = true
+editor_draw_drag_margin = true
+_sections_unfolded = [ "Editor" ]
+
+[node name="Panel" type="Panel" parent="Camera2D"]
+
+editor/display_folded = true
+modulate = Color( 0.279367, 0.851563, 0.179626, 0.535922 )
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = -206.0
+margin_top = 212.0
+margin_right = 213.0
+margin_bottom = 370.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+size_flags_horizontal = 1
+size_flags_vertical = 1
+_sections_unfolded = [ "Anchor", "Visibility" ]
+
+[node name="Pos1" type="Position2D" parent="Camera2D/Panel"]
+
+position = Vector2( 60, 20 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Pos2" type="Position2D" parent="Camera2D/Panel"]
+
+position = Vector2( 160, 20 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Pos3" type="Position2D" parent="Camera2D/Panel"]
+
+position = Vector2( 260, 20 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Pos4" type="Position2D" parent="Camera2D/Panel"]
+
+position = Vector2( 360, 20 )
+_sections_unfolded = [ "Transform" ]
+
 [node name="Dominoes" type="Node2D" parent="."]
 
 _sections_unfolded = [ "Transform" ]
@@ -43,6 +107,8 @@ position = Vector2( 2048, 2049.5 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="Debug" type="Node" parent="."]
+
+editor/display_folded = true
 
 [node name="LineBottom" type="Line2D" parent="Debug"]
 
