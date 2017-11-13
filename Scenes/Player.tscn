@@ -4,12 +4,13 @@
 
 [node name="Player" type="Sprite"]
 
-position = Vector2( 249.271, 126.617 )
+position = Vector2( 249.271, 65.617 )
 texture = ExtResource( 1 )
+_sections_unfolded = [ "Transform" ]
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
-position = Vector2( -248.558, -123.292 )
+position = Vector2( -248.558, -63.5843 )
 anchor_mode = 0
 rotating = false
 current = true
