@@ -1,0 +1,27 @@
+[gd_resource type="AudioBusLayout" load_steps=2 format=2]
+
+[sub_resource type="AudioEffectEQ10" id=1]
+
+resource_name = "EQ10"
+band_db/31_hz = 0.0
+band_db/62_hz = 0.0
+band_db/125_hz = 0.0
+band_db/250_hz = 0.0
+band_db/500_hz = 0.0
+band_db/1000_hz = 0.0
+band_db/2000_hz = 0.0
+band_db/4000_hz = 0.0
+band_db/8000_hz = 0.0
+band_db/16000_hz = 0.0
+
+[resource]
+
+bus/0/name = "Master"
+bus/0/solo = false
+bus/0/mute = false
+bus/0/bypass_fx = false
+bus/0/volume_db = 0.0
+bus/0/send = ""
+bus/0/effect/0/effect = SubResource( 1 )
+bus/0/effect/0/enabled = true
+

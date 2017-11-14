@@ -29,7 +29,7 @@ angular_damp = 1.0
 audio_bus_override = false
 audio_bus_name = "Master"
 script = ExtResource( 1 )
-_sections_unfolded = [ "Offset", "Transform" ]
+_sections_unfolded = [ "Offset", "Pickable", "Transform" ]
 
 [node name="Sprite" type="Sprite" parent="."]
 

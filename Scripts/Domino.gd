@@ -3,11 +3,11 @@ extends Node2D
 var anchor
 var values = {"top" : 0, "bottom" : 0}
 var unique_id
-var used = false
 
 signal on_dom_can_move
 signal on_mouse_over_top
 signal on_mouse_over_bottom
+signal on_dom_placed
 
 	
 func set_values(top, bottom):
@@ -19,16 +19,22 @@ func set_values(top, bottom):
 		$Sprite/TopLabel.text = str(top)
 	if bottom > 0:
 		$Sprite/BottomLabel.text = str(bottom)
-
-
 	
 func init_position(anchor_param):
 	anchor = anchor_param
 	position = anchor.global_position
+	anchor.free = false
 	
 func reset_position():
 	position = anchor.global_position
-	$Sprite.rotation = 0
+	$Sprite.rotation_deg = 0
+	
+func get_dom_rotation():
+	return get_node("Sprite").rotation_deg
+	
+func place_and_lock():
+	set_pickable(false)
+	emit_signal("on_dom_placed", self)
 
 func _on_Domino_mouse_entered():
 	emit_signal("on_dom_can_move", true, self)

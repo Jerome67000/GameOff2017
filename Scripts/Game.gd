@@ -3,19 +3,17 @@ extends Node2D
 var domino_scn = preload("res://Scenes/Domino.tscn")
 
 var mouse_pressed = false
-const INITIAL_DOM_COUNT = 4
 var selected_dom
-#var dom_position
 var clicked_pos = Vector2(0,0)
-const magnet_threshold = 20
 var must_magnet = false
 var magnet_pos
 var last_posed_dom
 
-onready var anchors = {"1" : $Camera2D/Panel/Pos1, "2" : $Camera2D/Panel/Pos2, "3" : $Camera2D/Panel/Pos3, "4" : $Camera2D/Panel/Pos4}
-var available_anchors = {"1" : true, "2" : true, "3" : true, "4" : true}
+export var debug = true
+export var magnet_threshold = 20
+export var INITIAL_DOM_COUNT = 4
 
-var debug = true
+onready var anchors = {"1" : $CameraTarget/Camera2D/Panel/Pos1, "2" : $CameraTarget/Camera2D/Panel/Pos2, "3" : $CameraTarget/Camera2D/Panel/Pos3, "4" : $CameraTarget/Camera2D/Panel/Pos4}
 
 func _ready():
 	create_initial_dominoes()
@@ -32,6 +30,13 @@ func on_mouse_over_domino(is_over, domino):
 		selected_dom = domino
 	else:
 		selected_dom = null
+	
+func on_dom_placed(domino):
+	last_posed_dom = domino
+	domino.anchor.free = true
+#	$CameraTarget.position.y += 100
+	printt("on_dom_placed", domino.unique_id)
+	printt(anchors["1"].free, anchors["2"].free, anchors["3"].free, anchors["4"].free)
 	
 
 #####################
@@ -54,8 +59,11 @@ func manage_mouse_click(clicked):
 		mouse_pressed = true
 	else:
 		mouse_pressed = false
-		if not must_magnet:
+		if must_magnet:
+			selected_dom.place_and_lock()
+		else:
 			selected_dom.reset_position()
+		
 
 func manage_mouse_motion():
 	if magnet_pos!= null and magnet_pos.distance_to(get_local_mouse_position()) > 30:
@@ -108,9 +116,9 @@ func add_new_domino(anchor):
 	var anchor_num = str(anchor+1)
 	domino.set_values(randi() % 6,  randi() % 6) # random numbrer from 0 to 6
 	domino.init_position(anchors[anchor_num])
-	available_anchors[anchor_num] = false
 
 	domino.connect("on_dom_can_move", self, "on_mouse_over_domino")
+	domino.connect("on_dom_placed", self, "on_dom_placed")
 #	domino.connect("on_mouse_over_top", self, "on_mouse_over_domino")
 #	domino.connect("on_mouse_over_bottom", self, "on_mouse_over_domino")
 	$Dominoes.add_child(domino)
@@ -145,7 +153,7 @@ func draw_debug():
 			$Debug/LineBottomRight.default_color = Color(1, 0, 0)
 			if from_bot_dist < magnet_threshold:
 				magnet_to(last_bottom.global_position)
-				selected_dom.get_node("Sprite").rotation_deg = 0
+				selected_dom.get_node("Sprite").rotation_deg = 0 + last_posed_dom.get_dom_rotation()
 			else:
 				must_magnet = false
 	
@@ -155,7 +163,7 @@ func draw_debug():
 			$Debug/LineBottomRight.default_color = Color(0, 1, 0)
 			if from_botright_dist < magnet_threshold:
 				magnet_to(last_bottom_right.global_position)
-				selected_dom.get_node("Sprite").rotation_deg = -90
+				selected_dom.get_node("Sprite").rotation_deg = -90 + last_posed_dom.get_dom_rotation()
 			else:
 				must_magnet = false
 				
@@ -165,6 +173,6 @@ func draw_debug():
 			$Debug/LineBottomRight.default_color = Color(1, 0, 0)
 			if from_botleft_dist < magnet_threshold:
 				magnet_to(last_bottom_left.global_position)
-				selected_dom.get_node("Sprite").rotation_deg = 90
+				selected_dom.get_node("Sprite").rotation_deg = 90 + last_posed_dom.get_dom_rotation()
 			else:
 				must_magnet = false

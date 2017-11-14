@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Scripts/Game.gd" type="Script" id=1]
-[ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scripts/Pos1.gd" type="Script" id=2]
+[ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=3]
 
 [sub_resource type="Gradient" id=1]
 
@@ -20,6 +21,9 @@ _sections_unfolded = [ "Transform" ]
 __meta__ = {
 "_edit_lock_": true
 }
+debug = true
+magnet_threshold = 20
+INITIAL_DOM_COUNT = 4
 
 [node name="Background" type="Sprite" parent="."]
 
@@ -29,7 +33,9 @@ region_enabled = true
 region_rect = Rect2( 0, 0, 4096, 4096 )
 _sections_unfolded = [ "Offset", "Region", "Transform" ]
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="CameraTarget" type="Position2D" parent="."]
+
+[node name="Camera2D" type="Camera2D" parent="CameraTarget"]
 
 position = Vector2( 2051.62, 2453.15 )
 anchor_mode = 1
@@ -54,9 +60,8 @@ editor_draw_limits = true
 editor_draw_drag_margin = true
 _sections_unfolded = [ "Editor" ]
 
-[node name="Panel" type="Panel" parent="Camera2D"]
+[node name="Panel" type="Panel" parent="CameraTarget/Camera2D"]
 
-editor/display_folded = true
 modulate = Color( 0.279367, 0.851563, 0.179626, 0.535922 )
 anchor_left = 0.0
 anchor_top = 0.0
@@ -71,33 +76,37 @@ rect_clip_content = false
 mouse_filter = 2
 size_flags_horizontal = 1
 size_flags_vertical = 1
-_sections_unfolded = [ "Anchor", "Visibility" ]
+_sections_unfolded = [ "Visibility" ]
 
-[node name="Pos1" type="Position2D" parent="Camera2D/Panel"]
+[node name="Pos1" type="Position2D" parent="CameraTarget/Camera2D/Panel"]
 
 position = Vector2( 60, 20 )
+script = ExtResource( 2 )
 _sections_unfolded = [ "Transform" ]
 
-[node name="Pos2" type="Position2D" parent="Camera2D/Panel"]
+[node name="Pos2" type="Position2D" parent="CameraTarget/Camera2D/Panel"]
 
 position = Vector2( 160, 20 )
+script = ExtResource( 2 )
 _sections_unfolded = [ "Transform" ]
 
-[node name="Pos3" type="Position2D" parent="Camera2D/Panel"]
+[node name="Pos3" type="Position2D" parent="CameraTarget/Camera2D/Panel"]
 
 position = Vector2( 260, 20 )
+script = ExtResource( 2 )
 _sections_unfolded = [ "Transform" ]
 
-[node name="Pos4" type="Position2D" parent="Camera2D/Panel"]
+[node name="Pos4" type="Position2D" parent="CameraTarget/Camera2D/Panel"]
 
 position = Vector2( 360, 20 )
+script = ExtResource( 2 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="Dominoes" type="Node2D" parent="."]
 
 _sections_unfolded = [ "Transform" ]
 
-[node name="Player" parent="." instance=ExtResource( 2 )]
+[node name="Player" parent="." instance=ExtResource( 3 )]
 
 position = Vector2( 2046.43, 2048.99 )
 
