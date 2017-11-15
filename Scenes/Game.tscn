@@ -62,7 +62,6 @@ _sections_unfolded = [ "Editor" ]
 
 [node name="Panel" type="Panel" parent="CameraTarget/Camera2D"]
 
-modulate = Color( 0.279367, 0.851563, 0.179626, 0.535922 )
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0

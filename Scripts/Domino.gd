@@ -1,46 +1,45 @@
 extends Node2D
 
-var anchor
+var panel_anchor
 var values = {"top" : 0, "bottom" : 0}
 var unique_id
 
-signal on_dom_can_move
-signal on_mouse_over_top
-signal on_mouse_over_bottom
-signal on_dom_placed
+signal _on_dom_can_move
+signal _on_mouse_over_top
+signal _on_mouse_over_bottom
+signal _on_dom_placed
 
-	
+
 func set_values(top, bottom):
 	unique_id = "#dom_t" + str(top) + "b" + str(bottom) + "_" + str(randi() % 1000 + 1)
 	values.top = top
 	values.bottom = bottom
-
+	
 	if top > 0:
 		$Sprite/TopLabel.text = str(top)
 	if bottom > 0:
 		$Sprite/BottomLabel.text = str(bottom)
 	
-func init_position(anchor_param):
-	anchor = anchor_param
-	position = anchor.global_position
-	anchor.free = false
+func bind_panel_anchor(anchor):
+	panel_anchor = anchor
+	panel_anchor.free = false
 	
-func reset_position():
-	position = anchor.global_position
+func reset_pos_and_rot():
+	position = Vector2(0,0)
 	$Sprite.rotation_deg = 0
 	
 func get_dom_rotation():
 	return get_node("Sprite").rotation_deg
 	
 func place_and_lock():
-	set_pickable(false)
-	emit_signal("on_dom_placed", self)
+	self.set_pickable(false)
+	emit_signal("_on_dom_placed", self)
 
 func _on_Domino_mouse_entered():
-	emit_signal("on_dom_can_move", true, self)
+	emit_signal("_on_dom_can_move", true, self)
 
 func _on_Domino_mouse_exited():
-	emit_signal("on_dom_can_move", false, self)
+	emit_signal("_on_dom_can_move", false, self)
 	
 	
 func _on_TopPickableDetection_mouse_entered():

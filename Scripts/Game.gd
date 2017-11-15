@@ -3,9 +3,9 @@ extends Node2D
 var domino_scn = preload("res://Scenes/Domino.tscn")
 
 var mouse_pressed = false
+var must_magnet = false
 var selected_dom
 var clicked_pos = Vector2(0,0)
-var must_magnet = false
 var magnet_pos
 var last_posed_dom
 
@@ -20,23 +20,27 @@ func _ready():
 	create_pickable_dominoes()
 	
 func _process(delta):
-	$Player.position.y += 50 * delta
+#	$Player.position.y += 50 * delta
 	if debug:
 		draw_debug()
 	
-func on_mouse_over_domino(is_over, domino):
-	printt("on_mouse_over_domino", "is_over: " + str(is_over), domino.unique_id)
+func _on_mouse_over_domino(is_over, domino):
+	printt("_on_mouse_over_domino", "is_over: " + str(is_over), domino.unique_id)
 	if is_over:
 		selected_dom = domino
 	else:
 		selected_dom = null
 	
-func on_dom_placed(domino):
-	last_posed_dom = domino
-	domino.anchor.free = true
-#	$CameraTarget.position.y += 100
-	printt("on_dom_placed", domino.unique_id)
-	printt(anchors["1"].free, anchors["2"].free, anchors["3"].free, anchors["4"].free)
+func _on_dom_placed(domino):
+	domino.get_parent().remove_child(domino) # error here  
+	domino.global_position = magnet_pos
+	$Dominoes.add_child(domino)
+#	last_posed_dom = domino
+#	domino.panel_anchor.free = true
+#	# TODO Move camera
+#	# TODO Delete domino
+#	# TODO Generate new one at empty anchor
+	selected_dom = null
 	
 
 #####################
@@ -55,29 +59,24 @@ func _input(event):
 func manage_mouse_click(clicked):
 	if clicked:
 		clicked_pos = get_global_mouse_position()
-#		dom_position = Vector2(selected_dom.position)
 		mouse_pressed = true
 	else:
 		mouse_pressed = false
 		if must_magnet:
 			selected_dom.place_and_lock()
 		else:
-			selected_dom.reset_position()
+			selected_dom.reset_pos_and_rot()
 		
 
 func manage_mouse_motion():
-	if magnet_pos!= null and magnet_pos.distance_to(get_local_mouse_position()) > 30:
+	if magnet_pos != null and magnet_pos.distance_to(get_global_mouse_position()) > 30:
 		must_magnet = false
-		var diff = clicked_pos - get_local_mouse_position()
-		selected_dom.position = selected_dom.anchor.global_position - diff
 	
 	if must_magnet:
-	#				print("must magnet")
-		selected_dom.position = magnet_pos
+		selected_dom.global_position = magnet_pos
 	else:
-	#				print("move domino")
-		var diff = clicked_pos - get_local_mouse_position()
-		selected_dom.position = selected_dom.anchor.global_position - diff
+		var diff = clicked_pos - get_global_mouse_position()
+		selected_dom.position = -diff
 				
 func magnet_to(pos):
 	must_magnet = true
@@ -115,13 +114,11 @@ func add_new_domino(anchor):
 	var domino = domino_scn.instance()
 	var anchor_num = str(anchor+1)
 	domino.set_values(randi() % 6,  randi() % 6) # random numbrer from 0 to 6
-	domino.init_position(anchors[anchor_num])
+	domino.bind_panel_anchor(anchors[anchor_num])
 
-	domino.connect("on_dom_can_move", self, "on_mouse_over_domino")
-	domino.connect("on_dom_placed", self, "on_dom_placed")
-#	domino.connect("on_mouse_over_top", self, "on_mouse_over_domino")
-#	domino.connect("on_mouse_over_bottom", self, "on_mouse_over_domino")
-	$Dominoes.add_child(domino)
+	domino.connect("_on_dom_can_move", self, "_on_mouse_over_domino")
+	domino.connect("_on_dom_placed", self, "_on_dom_placed")
+	anchors[anchor_num].add_child(domino)
 
 
 #####################
