@@ -27,6 +27,15 @@ func bind_panel_anchor(anchor):
 func reset_pos_and_rot():
 	position = Vector2(0,0)
 	$Sprite.rotation_deg = 0
+
+func reparent_to(new_parent, at_pos):
+	call_deferred("_deferred_reparent_to", new_parent, at_pos)
+
+
+func _deferred_reparent_to(new_parent, at_pos):
+	get_parent().remove_child(self)
+	new_parent.add_child(self)
+	position = at_pos
 	
 func get_dom_rotation():
 	return get_node("Sprite").rotation_deg

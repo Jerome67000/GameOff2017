@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scripts/Game.gd" type="Script" id=1]
-[ext_resource path="res://Scripts/Pos1.gd" type="Script" id=2]
-[ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scripts/SpawnTimer.gd" type="Script" id=2]
+[ext_resource path="res://Scripts/Spawner.gd" type="Script" id=3]
+[ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=4]
 
 [sub_resource type="Gradient" id=1]
 
@@ -13,6 +14,17 @@ colors = PoolColorArray( 0.112426, 0.112426, 0.112426, 1, 1, 1, 1, 1, 0, 0, 0, 1
 
 gradient = SubResource( 1 )
 width = 4096
+
+[sub_resource type="GDScript" id=3]
+
+script/source = "extends Position2D
+
+var free = true
+signal spawn_new_dom
+
+func _on_TimerPos1_timeout():
+	emit_signal(\"spawn_new_dom\")
+"
 
 [node name="Game" type="Node2D"]
 
@@ -35,9 +47,12 @@ _sections_unfolded = [ "Offset", "Region", "Transform" ]
 
 [node name="CameraTarget" type="Position2D" parent="."]
 
+position = Vector2( 2046, 2414.57 )
+_sections_unfolded = [ "Transform" ]
+
 [node name="Camera2D" type="Camera2D" parent="CameraTarget"]
 
-position = Vector2( 2051.62, 2453.15 )
+position = Vector2( -0.163033, 4.77937 )
 anchor_mode = 1
 rotating = false
 current = true
@@ -46,11 +61,11 @@ limit_left = -10000000
 limit_top = -10000000
 limit_right = 10000000
 limit_bottom = 10000000
-limit_smoothed = false
-drag_margin_h_enabled = true
-drag_margin_v_enabled = true
+limit_smoothed = true
+drag_margin_h_enabled = false
+drag_margin_v_enabled = false
 smoothing_enabled = true
-smoothing_speed = 5.0
+smoothing_speed = 1.0
 drag_margin_left = 0.2
 drag_margin_top = 0.2
 drag_margin_right = 0.2
@@ -58,7 +73,7 @@ drag_margin_bottom = 0.2
 editor_draw_screen = true
 editor_draw_limits = true
 editor_draw_drag_margin = true
-_sections_unfolded = [ "Editor" ]
+_sections_unfolded = [ "Limit", "Smoothing" ]
 
 [node name="Panel" type="Panel" parent="CameraTarget/Camera2D"]
 
@@ -66,46 +81,82 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = -206.0
-margin_top = 212.0
-margin_right = 213.0
-margin_bottom = 370.0
+margin_left = -207.0
+margin_top = 211.0
+margin_right = 212.0
+margin_bottom = 369.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
 size_flags_horizontal = 1
 size_flags_vertical = 1
+script = ExtResource( 2 )
 _sections_unfolded = [ "Visibility" ]
 
 [node name="Pos1" type="Position2D" parent="CameraTarget/Camera2D/Panel"]
 
 position = Vector2( 60, 20 )
-script = ExtResource( 2 )
+script = ExtResource( 3 )
 _sections_unfolded = [ "Transform" ]
+
+[node name="TimerPos1" type="Timer" parent="CameraTarget/Camera2D/Panel/Pos1"]
+
+process_mode = 1
+wait_time = 1.0
+one_shot = false
+autostart = false
 
 [node name="Pos2" type="Position2D" parent="CameraTarget/Camera2D/Panel"]
 
 position = Vector2( 160, 20 )
-script = ExtResource( 2 )
+script = SubResource( 3 )
 _sections_unfolded = [ "Transform" ]
+
+[node name="TimerPos2" type="Timer" parent="CameraTarget/Camera2D/Panel/Pos2"]
+
+process_mode = 1
+wait_time = 1.0
+one_shot = false
+autostart = false
 
 [node name="Pos3" type="Position2D" parent="CameraTarget/Camera2D/Panel"]
 
 position = Vector2( 260, 20 )
-script = ExtResource( 2 )
+script = SubResource( 3 )
 _sections_unfolded = [ "Transform" ]
+
+[node name="TimerPos3" type="Timer" parent="CameraTarget/Camera2D/Panel/Pos3"]
+
+process_mode = 1
+wait_time = 1.0
+one_shot = false
+autostart = false
 
 [node name="Pos4" type="Position2D" parent="CameraTarget/Camera2D/Panel"]
 
 position = Vector2( 360, 20 )
-script = ExtResource( 2 )
+script = SubResource( 3 )
 _sections_unfolded = [ "Transform" ]
+
+[node name="TimerPos4" type="Timer" parent="CameraTarget/Camera2D/Panel/Pos4"]
+
+process_mode = 1
+wait_time = 1.0
+one_shot = false
+autostart = false
+
+[node name="CanvasLayer" type="CanvasLayer" parent="CameraTarget/Camera2D"]
+
+layer = 1
+offset = Vector2( 0, 0 )
+rotation = 0.0
+scale = Vector2( 1, 1 )
 
 [node name="Dominoes" type="Node2D" parent="."]
 
 _sections_unfolded = [ "Transform" ]
 
-[node name="Player" parent="." instance=ExtResource( 3 )]
+[node name="Player" parent="." instance=ExtResource( 4 )]
 
 position = Vector2( 2046.43, 2048.99 )
 
@@ -144,5 +195,7 @@ default_color = Color( 1, 0, 0, 1 )
 texture_mode = 579826912
 sharp_limit = 2.0
 round_precision = 8
+
+[connection signal="timeout" from="CameraTarget/Camera2D/Panel/Pos1/TimerPos1" to="CameraTarget/Camera2D/Panel/Pos1" method="_on_TimerPos1_timeout"]
 
 

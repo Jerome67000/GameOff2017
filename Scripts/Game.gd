@@ -7,7 +7,6 @@ var must_magnet = false
 var selected_dom
 var clicked_pos = Vector2(0,0)
 var magnet_pos
-var last_posed_dom
 
 export var debug = true
 export var magnet_threshold = 20
@@ -32,16 +31,15 @@ func _on_mouse_over_domino(is_over, domino):
 		selected_dom = null
 	
 func _on_dom_placed(domino):
-	domino.get_parent().remove_child(domino) # error here  
-	domino.global_position = magnet_pos
-	$Dominoes.add_child(domino)
-#	last_posed_dom = domino
-#	domino.panel_anchor.free = true
-#	# TODO Move camera
-#	# TODO Delete domino
+	domino.reparent_to($Dominoes, magnet_pos)
+	# TODO free anchor ???
+	$CameraTarget.position.y += 100
+
 #	# TODO Generate new one at empty anchor
 	selected_dom = null
-	
+
+func get_last_posed_dom():
+	return $Dominoes.get_child($Dominoes.get_child_count()-1)
 
 #####################
 #### INPUTS
@@ -103,7 +101,6 @@ func create_initial_dominoes():
 		var dom_scale = domino.get_node("Sprite").scale
 		domino.position = Vector2($Center.position.x, $Center.position.y + (num*dom_size.y*dom_scale.y))
 		$Dominoes.add_child( domino)
-		last_posed_dom = domino
 		
 func create_pickable_dominoes():
 	for num in range(INITIAL_DOM_COUNT):
@@ -127,9 +124,9 @@ func add_new_domino(anchor):
 func draw_debug():
 	if selected_dom != null:
 		var curr_top = selected_dom.get_node("Sprite/Top")
-		var last_bottom = last_posed_dom.get_node("Sprite/Bottom")
-		var last_bottom_left = last_posed_dom.get_node("Sprite/BottomLeft")
-		var last_bottom_right = last_posed_dom.get_node("Sprite/BottomRight")
+		var last_bottom = get_last_posed_dom().get_node("Sprite/Bottom")
+		var last_bottom_left = get_last_posed_dom().get_node("Sprite/BottomLeft")
+		var last_bottom_right = get_last_posed_dom().get_node("Sprite/BottomRight")
 				
 		$Debug/LineBottom.set_point_position(0, curr_top.global_position)
 		$Debug/LineBottom.set_point_position(1, last_bottom.global_position)
@@ -150,7 +147,7 @@ func draw_debug():
 			$Debug/LineBottomRight.default_color = Color(1, 0, 0)
 			if from_bot_dist < magnet_threshold:
 				magnet_to(last_bottom.global_position)
-				selected_dom.get_node("Sprite").rotation_deg = 0 + last_posed_dom.get_dom_rotation()
+				selected_dom.get_node("Sprite").rotation_deg = 0 + get_last_posed_dom().get_dom_rotation()
 			else:
 				must_magnet = false
 	
@@ -160,7 +157,7 @@ func draw_debug():
 			$Debug/LineBottomRight.default_color = Color(0, 1, 0)
 			if from_botright_dist < magnet_threshold:
 				magnet_to(last_bottom_right.global_position)
-				selected_dom.get_node("Sprite").rotation_deg = -90 + last_posed_dom.get_dom_rotation()
+				selected_dom.get_node("Sprite").rotation_deg = -90 + get_last_posed_dom().get_dom_rotation()
 			else:
 				must_magnet = false
 				
@@ -170,6 +167,6 @@ func draw_debug():
 			$Debug/LineBottomRight.default_color = Color(1, 0, 0)
 			if from_botleft_dist < magnet_threshold:
 				magnet_to(last_bottom_left.global_position)
-				selected_dom.get_node("Sprite").rotation_deg = 90 + last_posed_dom.get_dom_rotation()
+				selected_dom.get_node("Sprite").rotation_deg = 90 + get_last_posed_dom().get_dom_rotation()
 			else:
 				must_magnet = false
