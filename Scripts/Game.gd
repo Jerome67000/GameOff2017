@@ -33,7 +33,7 @@ func _on_mouse_over_domino(is_over, domino):
 func _on_dom_placed(domino):
 	domino.reparent_to($Dominoes, magnet_pos)
 	# TODO free anchor ???
-	$CameraTarget.position.y += 100
+	$CameraTarget.position = magnet_pos
 
 #	# TODO Generate new one at empty anchor
 	selected_dom = null
