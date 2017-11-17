@@ -29,6 +29,7 @@ func reset_pos_and_rot():
 	$Sprite.rotation_deg = 0
 
 func reparent_to(new_parent, at_pos):
+	get_parent().call("start_timer")
 	call_deferred("_deferred_reparent_to", new_parent, at_pos)
 
 

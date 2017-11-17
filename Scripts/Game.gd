@@ -18,6 +18,8 @@ func _ready():
 	create_initial_dominoes()
 	create_pickable_dominoes()
 	
+	connect_timer_spawn()
+	
 func _process(delta):
 #	$Player.position.y += 50 * delta
 	if debug:
@@ -37,7 +39,16 @@ func _on_dom_placed(domino):
 
 #	# TODO Generate new one at empty anchor
 	selected_dom = null
+	
+func connect_timer_spawn():
+	$CameraTarget/Camera2D/Panel/Pos1.connect("_spawn_new_dom", self, "_on_spawn_new_dom")
+	$CameraTarget/Camera2D/Panel/Pos2.connect("_spawn_new_dom", self, "_on_spawn_new_dom")
+	$CameraTarget/Camera2D/Panel/Pos3.connect("_spawn_new_dom", self, "_on_spawn_new_dom")
+	$CameraTarget/Camera2D/Panel/Pos4.connect("_spawn_new_dom", self, "_on_spawn_new_dom")
 
+func _on_spawn_new_dom(anchor_pos):
+	add_new_domino(anchor_pos)
+	
 func get_last_posed_dom():
 	return $Dominoes.get_child($Dominoes.get_child_count()-1)
 

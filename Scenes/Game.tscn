@@ -1,9 +1,8 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Scripts/Game.gd" type="Script" id=1]
-[ext_resource path="res://Scripts/SpawnTimer.gd" type="Script" id=2]
-[ext_resource path="res://Scripts/Spawner.gd" type="Script" id=3]
-[ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scripts/Spawner.gd" type="Script" id=2]
+[ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=3]
 
 [sub_resource type="Gradient" id=1]
 
@@ -14,17 +13,6 @@ colors = PoolColorArray( 0.112426, 0.112426, 0.112426, 1, 1, 1, 1, 1, 0, 0, 0, 1
 
 gradient = SubResource( 1 )
 width = 4096
-
-[sub_resource type="GDScript" id=3]
-
-script/source = "extends Position2D
-
-var free = true
-signal spawn_new_dom
-
-func _on_TimerPos1_timeout():
-	emit_signal(\"spawn_new_dom\")
-"
 
 [node name="Game" type="Node2D"]
 
@@ -90,59 +78,58 @@ rect_clip_content = false
 mouse_filter = 2
 size_flags_horizontal = 1
 size_flags_vertical = 1
-script = ExtResource( 2 )
 _sections_unfolded = [ "Visibility" ]
 
 [node name="Pos1" type="Position2D" parent="CameraTarget/Camera2D/Panel"]
 
 position = Vector2( 60, 20 )
-script = ExtResource( 3 )
+script = ExtResource( 2 )
 _sections_unfolded = [ "Transform" ]
 
-[node name="TimerPos1" type="Timer" parent="CameraTarget/Camera2D/Panel/Pos1"]
+[node name="TimerPos" type="Timer" parent="CameraTarget/Camera2D/Panel/Pos1"]
 
 process_mode = 1
 wait_time = 1.0
-one_shot = false
+one_shot = true
 autostart = false
 
 [node name="Pos2" type="Position2D" parent="CameraTarget/Camera2D/Panel"]
 
 position = Vector2( 160, 20 )
-script = SubResource( 3 )
+script = ExtResource( 2 )
 _sections_unfolded = [ "Transform" ]
 
-[node name="TimerPos2" type="Timer" parent="CameraTarget/Camera2D/Panel/Pos2"]
+[node name="TimerPos" type="Timer" parent="CameraTarget/Camera2D/Panel/Pos2"]
 
 process_mode = 1
 wait_time = 1.0
-one_shot = false
+one_shot = true
 autostart = false
 
 [node name="Pos3" type="Position2D" parent="CameraTarget/Camera2D/Panel"]
 
 position = Vector2( 260, 20 )
-script = SubResource( 3 )
+script = ExtResource( 2 )
 _sections_unfolded = [ "Transform" ]
 
-[node name="TimerPos3" type="Timer" parent="CameraTarget/Camera2D/Panel/Pos3"]
+[node name="TimerPos" type="Timer" parent="CameraTarget/Camera2D/Panel/Pos3"]
 
 process_mode = 1
 wait_time = 1.0
-one_shot = false
+one_shot = true
 autostart = false
 
 [node name="Pos4" type="Position2D" parent="CameraTarget/Camera2D/Panel"]
 
 position = Vector2( 360, 20 )
-script = SubResource( 3 )
+script = ExtResource( 2 )
 _sections_unfolded = [ "Transform" ]
 
-[node name="TimerPos4" type="Timer" parent="CameraTarget/Camera2D/Panel/Pos4"]
+[node name="TimerPos" type="Timer" parent="CameraTarget/Camera2D/Panel/Pos4"]
 
 process_mode = 1
 wait_time = 1.0
-one_shot = false
+one_shot = true
 autostart = false
 
 [node name="CanvasLayer" type="CanvasLayer" parent="CameraTarget/Camera2D"]
@@ -156,7 +143,7 @@ scale = Vector2( 1, 1 )
 
 _sections_unfolded = [ "Transform" ]
 
-[node name="Player" parent="." instance=ExtResource( 4 )]
+[node name="Player" parent="." instance=ExtResource( 3 )]
 
 position = Vector2( 2046.43, 2048.99 )
 
@@ -196,6 +183,12 @@ texture_mode = 579826912
 sharp_limit = 2.0
 round_precision = 8
 
-[connection signal="timeout" from="CameraTarget/Camera2D/Panel/Pos1/TimerPos1" to="CameraTarget/Camera2D/Panel/Pos1" method="_on_TimerPos1_timeout"]
+[connection signal="timeout" from="CameraTarget/Camera2D/Panel/Pos1/TimerPos" to="CameraTarget/Camera2D/Panel/Pos1" method="_on_TimerPos_timeout"]
+
+[connection signal="timeout" from="CameraTarget/Camera2D/Panel/Pos2/TimerPos" to="CameraTarget/Camera2D/Panel/Pos2" method="_on_TimerPos_timeout"]
+
+[connection signal="timeout" from="CameraTarget/Camera2D/Panel/Pos3/TimerPos" to="CameraTarget/Camera2D/Panel/Pos3" method="_on_TimerPos_timeout"]
+
+[connection signal="timeout" from="CameraTarget/Camera2D/Panel/Pos4/TimerPos" to="CameraTarget/Camera2D/Panel/Pos4" method="_on_TimerPos_timeout"]
 
 
