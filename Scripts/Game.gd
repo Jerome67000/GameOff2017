@@ -11,6 +11,7 @@ var magnet_pos
 export var debug = true
 export var magnet_threshold = 20
 export var INITIAL_DOM_COUNT = 4
+export var point_speed = 100
 
 onready var anchors = {"1" : $CameraTarget/Camera2D/Panel/Pos1, "2" : $CameraTarget/Camera2D/Panel/Pos2, "3" : $CameraTarget/Camera2D/Panel/Pos3, "4" : $CameraTarget/Camera2D/Panel/Pos4}
 
@@ -21,7 +22,8 @@ func _ready():
 	connect_timer_spawn()
 	
 func _process(delta):
-#	$Player.position.y += 50 * delta
+	update()
+	$Path2D/PathFollow2D.set_offset($Path2D/PathFollow2D.get_offset() + point_speed * delta)
 	if debug:
 		draw_debug()
 	
@@ -34,11 +36,35 @@ func _on_mouse_over_domino(is_over, domino):
 	
 func _on_dom_placed(domino):
 	domino.reparent_to($Dominoes, magnet_pos)
-	# TODO free anchor ???
 	$CameraTarget.position = magnet_pos
-
-#	# TODO Generate new one at empty anchor
+	add_point_to_path(domino)
 	selected_dom = null
+
+func add_point_to_path(domino):
+	var dom_size = domino.get_node("Sprite").get_item_rect().size
+	var dom_scale = domino.get_node("Sprite").scale
+	var last_point = $Path2D.curve.get_point_position($Path2D.curve.get_point_count()-1)
+	
+	var dom_rot = domino.get_node("Sprite").rotation_deg
+	var dom_scaled_size = dom_size.y*dom_scale.y
+	if dom_rot == 90:
+		var to_add = Vector2(dom_scaled_size, 0)
+		last_point -= to_add
+	elif dom_rot == -90:
+		var to_add = Vector2(dom_scaled_size, 0)
+		last_point += to_add
+	elif dom_rot == 180 or dom_rot == -180:
+		var to_add = Vector2(0, dom_scaled_size)
+		last_point -= to_add
+	else:
+		var to_add = Vector2(0, dom_scaled_size)
+		last_point += to_add
+		
+	printt("last ", last_point)
+#	printt("to ", to_add)
+	$Path2D.curve.add_point(last_point)
+
+
 	
 func connect_timer_spawn():
 	$CameraTarget/Camera2D/Panel/Pos1.connect("_spawn_new_dom", self, "_on_spawn_new_dom")
@@ -111,7 +137,8 @@ func create_initial_dominoes():
 		var dom_size = domino.get_node("Sprite").get_item_rect().size
 		var dom_scale = domino.get_node("Sprite").scale
 		domino.position = Vector2($Center.position.x, $Center.position.y + (num*dom_size.y*dom_scale.y))
-		$Dominoes.add_child( domino)
+		$Dominoes.add_child(domino)
+		$Path2D.curve.add_point(Vector2(0, ((1+num)*dom_size.y*dom_scale.y)))
 		
 func create_pickable_dominoes():
 	for num in range(INITIAL_DOM_COUNT):
@@ -127,7 +154,6 @@ func add_new_domino(anchor):
 	domino.connect("_on_dom_can_move", self, "_on_mouse_over_domino")
 	domino.connect("_on_dom_placed", self, "_on_dom_placed")
 	anchors[anchor_num].add_child(domino)
-
 
 #####################
 #### DEBUG

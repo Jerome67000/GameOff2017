@@ -1,8 +1,8 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Scripts/Game.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Spawner.gd" type="Script" id=2]
-[ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Assets/Sprites/dot.png" type="Texture" id=3]
 
 [sub_resource type="Gradient" id=1]
 
@@ -12,7 +12,15 @@ colors = PoolColorArray( 0.112426, 0.112426, 0.112426, 1, 1, 1, 1, 1, 0, 0, 0, 1
 [sub_resource type="GradientTexture" id=2]
 
 gradient = SubResource( 1 )
-width = 4096
+width = 2048
+
+[sub_resource type="Curve2D" id=3]
+
+bake_interval = 5.0
+_data = {
+"points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0 )
+}
+_sections_unfolded = [ "Resource" ]
 
 [node name="Game" type="Node2D"]
 
@@ -24,18 +32,28 @@ __meta__ = {
 debug = true
 magnet_threshold = 20
 INITIAL_DOM_COUNT = 4
+point_speed = 100
 
 [node name="Background" type="Sprite" parent="."]
 
 texture = SubResource( 2 )
 centered = false
 region_enabled = true
-region_rect = Rect2( 0, 0, 4096, 4096 )
+region_rect = Rect2( 0, 0, 2048, 2048 )
 _sections_unfolded = [ "Offset", "Region", "Transform" ]
+
+[node name="Center" type="Position2D" parent="."]
+
+position = Vector2( 1023, 608 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="Dominoes" type="Node2D" parent="."]
+
+_sections_unfolded = [ "Transform" ]
 
 [node name="CameraTarget" type="Position2D" parent="."]
 
-position = Vector2( 2046, 2414.57 )
+position = Vector2( 1022, 996.2 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="Camera2D" type="Camera2D" parent="CameraTarget"]
@@ -139,19 +157,6 @@ offset = Vector2( 0, 0 )
 rotation = 0.0
 scale = Vector2( 1, 1 )
 
-[node name="Dominoes" type="Node2D" parent="."]
-
-_sections_unfolded = [ "Transform" ]
-
-[node name="Player" parent="." instance=ExtResource( 3 )]
-
-position = Vector2( 2046.43, 2048.99 )
-
-[node name="Center" type="Position2D" parent="."]
-
-position = Vector2( 2048, 2049.5 )
-_sections_unfolded = [ "Transform" ]
-
 [node name="Debug" type="Node" parent="."]
 
 editor/display_folded = true
@@ -182,6 +187,27 @@ default_color = Color( 1, 0, 0, 1 )
 texture_mode = 579826912
 sharp_limit = 2.0
 round_precision = 8
+
+[node name="Path2D" type="Path2D" parent="."]
+
+position = Vector2( 1023, 606 )
+curve = SubResource( 3 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+
+offset = 0.0
+h_offset = 0.0
+v_offset = 0.0
+rotate = false
+cubic_interp = true
+loop = false
+lookahead = 4.0
+_sections_unfolded = [ "Transform", "Z" ]
+
+[node name="Sprite" type="Sprite" parent="Path2D/PathFollow2D"]
+
+texture = ExtResource( 3 )
 
 [connection signal="timeout" from="CameraTarget/Camera2D/Panel/Pos1/TimerPos" to="CameraTarget/Camera2D/Panel/Pos1" method="_on_TimerPos_timeout"]
 

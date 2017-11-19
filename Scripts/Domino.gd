@@ -22,7 +22,6 @@ func set_values(top, bottom):
 	
 func bind_panel_anchor(anchor):
 	panel_anchor = anchor
-	panel_anchor.free = false
 	
 func reset_pos_and_rot():
 	position = Vector2(0,0)

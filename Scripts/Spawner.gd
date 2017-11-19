@@ -1,6 +1,5 @@
 extends Position2D
 
-var free = true
 signal _spawn_new_dom
 
 func start_timer():
