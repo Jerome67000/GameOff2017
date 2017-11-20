@@ -30,12 +30,15 @@ func _process(delta):
 func check_value_validity():
 	if selected_dom != null:
 		if must_magnet:
-			if get_last_posed_dom().values["bottom"] == 0 or selected_dom.values["top"] == get_last_posed_dom().values["bottom"]:
+			if get_last_posed_dom().values["bottom"] == 0 or selected_dom.values["top"] == 0 or selected_dom.values["top"] == get_last_posed_dom().values["bottom"]:
 				selected_dom.set_good_color()
 			else:
 				selected_dom.set_wrong_color()
 		else:
-			selected_dom.set_clear_color()
+			if selected_dom.position.y > 140:
+				selected_dom.set_wrong_color()
+			else:
+				selected_dom.set_clear_color()
 				
 	
 func _on_mouse_over_domino(is_over, domino):
@@ -108,14 +111,14 @@ func manage_mouse_click(clicked):
 		mouse_pressed = true
 	else:
 		mouse_pressed = false
-		var sel_top = selected_dom.values["top"]
-		var last_bot = get_last_posed_dom().values["bottom"]
 		if must_magnet and selected_dom.valid_color():
 			selected_dom.place_and_lock()
+		elif must_magnet == false and selected_dom.position.y > 140:
+			selected_dom.reparent_to($UnusedDominoes, Vector2(0,0))
+			selected_dom = null
 		else:
 			selected_dom.reset_pos_and_rot()
 		
-
 func manage_mouse_motion():
 	if magnet_pos != null and magnet_pos.distance_to(get_global_mouse_position()) > 30:
 		must_magnet = false
@@ -125,7 +128,7 @@ func manage_mouse_motion():
 	else:
 		var diff = clicked_pos - get_global_mouse_position()
 		selected_dom.position = -diff
-				
+	
 func magnet_to(pos):
 	must_magnet = true
 	magnet_pos = pos

@@ -24,6 +24,7 @@ func bind_panel_anchor(anchor):
 	panel_anchor = anchor
 	
 func reset_pos_and_rot():
+	print("reste pos")
 	position = Vector2(0,0)
 	$Sprite.rotation_deg = 0
 	set_clear_color()

@@ -32,7 +32,7 @@ __meta__ = {
 debug = true
 magnet_threshold = 20
 INITIAL_DOM_COUNT = 4
-point_speed = 100
+point_speed = 50
 
 [node name="Background" type="Sprite" parent="."]
 
@@ -51,8 +51,14 @@ _sections_unfolded = [ "Transform" ]
 
 _sections_unfolded = [ "Transform" ]
 
+[node name="UnusedDominoes" type="Node2D" parent="."]
+
+visible = false
+_sections_unfolded = [ "Transform" ]
+
 [node name="CameraTarget" type="Position2D" parent="."]
 
+editor/display_folded = true
 position = Vector2( 1022, 996.2 )
 _sections_unfolded = [ "Transform" ]
 
@@ -159,10 +165,9 @@ scale = Vector2( 1, 1 )
 
 [node name="Debug" type="Node" parent="."]
 
-editor/display_folded = true
-
 [node name="LineBottom" type="Line2D" parent="Debug"]
 
+visible = false
 points = PoolVector2Array( 0, 0, 0, 0 )
 width = 2.0
 default_color = Color( 1, 0, 0, 1 )
@@ -172,6 +177,7 @@ round_precision = 8
 
 [node name="LineBottomLeft" type="Line2D" parent="Debug"]
 
+visible = false
 points = PoolVector2Array( 0, 0, 0, 0 )
 width = 2.0
 default_color = Color( 1, 0, 0, 1 )
@@ -181,6 +187,7 @@ round_precision = 8
 
 [node name="LineBottomRight" type="Line2D" parent="Debug"]
 
+visible = false
 points = PoolVector2Array( 0, 0, 0, 0 )
 width = 2.0
 default_color = Color( 1, 0, 0, 1 )
