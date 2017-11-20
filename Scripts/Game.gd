@@ -7,6 +7,7 @@ var must_magnet = false
 var selected_dom
 var clicked_pos = Vector2(0,0)
 var magnet_pos
+var is_valid_dom
 
 export var debug = true
 export var magnet_threshold = 20
@@ -18,14 +19,24 @@ onready var anchors = {"1" : $CameraTarget/Camera2D/Panel/Pos1, "2" : $CameraTar
 func _ready():
 	create_initial_dominoes()
 	create_pickable_dominoes()
-	
 	connect_timer_spawn()
 	
 func _process(delta):
-	update()
 	$Path2D/PathFollow2D.set_offset($Path2D/PathFollow2D.get_offset() + point_speed * delta)
+	check_value_validity()
 	if debug:
 		draw_debug()
+		
+func check_value_validity():
+	if selected_dom != null:
+		if must_magnet:
+			if get_last_posed_dom().values["bottom"] == 0 or selected_dom.values["top"] == get_last_posed_dom().values["bottom"]:
+				selected_dom.set_good_color()
+			else:
+				selected_dom.set_wrong_color()
+		else:
+			selected_dom.set_clear_color()
+				
 	
 func _on_mouse_over_domino(is_over, domino):
 	printt("_on_mouse_over_domino", "is_over: " + str(is_over), domino.unique_id)
@@ -35,6 +46,7 @@ func _on_mouse_over_domino(is_over, domino):
 		selected_dom = null
 	
 func _on_dom_placed(domino):
+	domino.get_node("Sprite").modulate = Color(1,1,1)
 	domino.reparent_to($Dominoes, magnet_pos)
 	$CameraTarget.position = magnet_pos
 	add_point_to_path(domino)
@@ -61,7 +73,6 @@ func add_point_to_path(domino):
 		last_point += to_add
 		
 	printt("last ", last_point)
-#	printt("to ", to_add)
 	$Path2D.curve.add_point(last_point)
 
 
@@ -97,7 +108,9 @@ func manage_mouse_click(clicked):
 		mouse_pressed = true
 	else:
 		mouse_pressed = false
-		if must_magnet:
+		var sel_top = selected_dom.values["top"]
+		var last_bot = get_last_posed_dom().values["bottom"]
+		if must_magnet and selected_dom.valid_color():
 			selected_dom.place_and_lock()
 		else:
 			selected_dom.reset_pos_and_rot()

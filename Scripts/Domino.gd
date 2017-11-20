@@ -26,17 +26,29 @@ func bind_panel_anchor(anchor):
 func reset_pos_and_rot():
 	position = Vector2(0,0)
 	$Sprite.rotation_deg = 0
+	set_clear_color()
 
 func reparent_to(new_parent, at_pos):
 	get_parent().call("start_timer")
 	call_deferred("_deferred_reparent_to", new_parent, at_pos)
 
-
 func _deferred_reparent_to(new_parent, at_pos):
 	get_parent().remove_child(self)
 	new_parent.add_child(self)
 	position = at_pos
+
+func set_good_color():
+	$Sprite.modulate = Color(0,1,0)
+
+func set_wrong_color():
+	$Sprite.modulate = Color(1,0,0)
+
+func set_clear_color():
+	$Sprite.modulate = Color(1,1,1)
 	
+func valid_color():
+	return $Sprite.modulate == Color(0,1,0)
+
 func get_dom_rotation():
 	return get_node("Sprite").rotation_deg
 	
