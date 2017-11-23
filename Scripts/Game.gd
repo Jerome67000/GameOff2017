@@ -15,6 +15,8 @@ export var point_speed = 100
 
 onready var anchors = {"1" : $CameraTarget/Camera2D/Panel/Pos1, "2" : $CameraTarget/Camera2D/Panel/Pos2, "3" : $CameraTarget/Camera2D/Panel/Pos3, "4" : $CameraTarget/Camera2D/Panel/Pos4}
 
+var score = 0
+
 func _ready():
 	create_initial_dominoes()
 	create_pickable_dominoes()
@@ -22,10 +24,9 @@ func _ready():
 	
 func _process(delta):
 	$Path2D/PathFollow2D.set_offset($Path2D/PathFollow2D.get_offset() + point_speed * delta)
-	check_value_validity()
 	check_for_magnet()
 		
-func check_value_validity():
+func set_domino_color():
 	if selected_dom != null:
 		if must_magnet:
 			if get_last_posed_dom().values["bottom"] == 0 or selected_dom.values["top"] == 0 or selected_dom.values["top"] == get_last_posed_dom().values["bottom"]:
@@ -53,6 +54,8 @@ func _on_dom_placed(domino):
 	$CameraTarget.position = magnet_pos
 	add_point_to_path(domino)
 	selected_dom = null
+	score += 1
+	$CameraTarget/Camera2D/Score/LabelScore.text = str(score)
 
 func add_point_to_path(domino):
 	var dom_size = domino.get_node("Sprite").get_item_rect().size
@@ -76,8 +79,7 @@ func add_point_to_path(domino):
 		
 	printt("last ", last_point)
 	$Path2D.curve.add_point(last_point)
-
-
+	
 	
 func connect_timer_spawn():
 	$CameraTarget/Camera2D/Panel/Pos1.connect("_spawn_new_dom", self, "_on_spawn_new_dom")
@@ -113,7 +115,8 @@ func manage_mouse_click(clicked):
 		if must_magnet and selected_dom.valid_color():
 			selected_dom.place_and_lock()
 		elif must_magnet == false and selected_dom.position.y > 145:
-			selected_dom.reparent_to($UnusedDominoes, Vector2(0,0))
+#			selected_dom.reparent_to($UnusedDominoes, Vector2(0,0))
+			selected_dom.droped()
 			selected_dom = null
 		else:
 			selected_dom.reset_pos_and_rot()
@@ -129,6 +132,8 @@ func manage_mouse_motion():
 	else:
 		var diff = clicked_pos - get_global_mouse_position()
 		selected_dom.position = -diff
+		
+	set_domino_color()
 	
 func magnet_to(pos):
 	must_magnet = true
@@ -204,6 +209,7 @@ func check_for_magnet():
 		if from_botleft_dist < from_bot_dist and from_botleft_dist < from_botright_dist:
 			if from_botleft_dist < magnet_threshold:
 				magnet_to(last_bottom_left.global_position)
-				selected_dom.get_node("Sprite").rotation_deg = 90 + get_last_posed_dom().get_dom_rotation()
+				selected_dom.rot_min_90()
+#				selected_dom.get_node("Sprite").rotation_deg = 90 + get_last_posed_dom().get_dom_rotation()
 			else:
 				must_magnet = false

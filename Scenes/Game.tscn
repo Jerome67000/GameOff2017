@@ -15,7 +15,7 @@ colors = PoolColorArray( 0.112426, 0.112426, 0.112426, 1, 1, 1, 1, 1, 0, 0, 0, 1
 gradient = SubResource( 1 )
 width = 2048
 
-[sub_resource type="DynamicFont" id=5]
+[sub_resource type="DynamicFont" id=3]
 
 size = 18
 use_mipmaps = true
@@ -31,7 +31,7 @@ use_filter = true
 font_data = ExtResource( 2 )
 _sections_unfolded = [ "Font", "Settings" ]
 
-[sub_resource type="Curve2D" id=3]
+[sub_resource type="Curve2D" id=5]
 
 bake_interval = 5.0
 _data = {
@@ -104,7 +104,6 @@ _sections_unfolded = [ "Limit", "Smoothing" ]
 
 [node name="Score" type="Panel" parent="CameraTarget/Camera2D"]
 
-self_modulate = Color( 0.992188, 0, 0, 1 )
 anchor_left = 0.0
 anchor_top = 0.5
 anchor_right = 0.0
@@ -120,27 +119,28 @@ size_flags_horizontal = 1
 size_flags_vertical = 1
 _sections_unfolded = [ "Visibility" ]
 
-[node name="Label" type="Label" parent="CameraTarget/Camera2D/Score"]
+[node name="LabelTitle" type="Label" parent="CameraTarget/Camera2D/Score"]
 
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 1.0
+margin_left = 10.0
 margin_right = 59.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
 size_flags_horizontal = 1
 size_flags_vertical = 4
-custom_fonts/font = SubResource( 5 )
+custom_fonts/font = SubResource( 3 )
 text = "Score :"
 valign = 1
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
-_sections_unfolded = [ "custom_fonts" ]
+_sections_unfolded = [ "Margin", "custom_fonts" ]
 
-[node name="Label2" type="Label" parent="CameraTarget/Camera2D/Score"]
+[node name="LabelScore" type="Label" parent="CameraTarget/Camera2D/Score"]
 
 anchor_left = 1.0
 anchor_top = 0.5
@@ -148,20 +148,21 @@ anchor_right = 1.0
 anchor_bottom = 0.5
 margin_left = -59.0
 margin_top = -35.0
+margin_right = -10.0
 margin_bottom = 35.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
 size_flags_horizontal = 1
 size_flags_vertical = 4
-custom_fonts/font = SubResource( 5 )
+custom_fonts/font = SubResource( 3 )
 text = "0"
 align = 2
 valign = 1
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
-_sections_unfolded = [ "custom_fonts" ]
+_sections_unfolded = [ "Margin", "custom_fonts" ]
 
 [node name="DropZone" type="Panel" parent="CameraTarget/Camera2D"]
 
@@ -312,7 +313,7 @@ round_precision = 8
 [node name="Path2D" type="Path2D" parent="."]
 
 position = Vector2( 498.554, 63.681 )
-curve = SubResource( 3 )
+curve = SubResource( 5 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
