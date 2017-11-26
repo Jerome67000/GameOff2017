@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Scripts/Game.gd" type="Script" id=1]
-[ext_resource path="res://Assets/Fonts/OpenSans-Bold.ttf" type="DynamicFontData" id=2]
-[ext_resource path="res://Scripts/Spawner.gd" type="Script" id=3]
-[ext_resource path="res://Assets/Sprites/dot.png" type="Texture" id=4]
+[ext_resource path="res://Scenes/Domino.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Assets/Fonts/OpenSans-Bold.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://Scripts/Spawner.gd" type="Script" id=4]
+[ext_resource path="res://Assets/Sprites/dot.png" type="Texture" id=5]
 
 [sub_resource type="Gradient" id=1]
 
@@ -13,14 +14,14 @@ colors = PoolColorArray( 0.112426, 0.112426, 0.112426, 1, 1, 1, 1, 1, 0, 0, 0, 1
 [sub_resource type="GradientTexture" id=2]
 
 gradient = SubResource( 1 )
-width = 2048
+width = 1600
 
 [sub_resource type="DynamicFont" id=3]
 
 size = 18
 use_mipmaps = true
 use_filter = true
-font_data = ExtResource( 2 )
+font_data = ExtResource( 3 )
 _sections_unfolded = [ "Extra Spacing", "Font", "Settings" ]
 
 [sub_resource type="DynamicFont" id=4]
@@ -28,7 +29,7 @@ _sections_unfolded = [ "Extra Spacing", "Font", "Settings" ]
 size = 32
 use_mipmaps = true
 use_filter = true
-font_data = ExtResource( 2 )
+font_data = ExtResource( 3 )
 _sections_unfolded = [ "Font", "Settings" ]
 
 [sub_resource type="Curve2D" id=5]
@@ -55,17 +56,21 @@ point_speed = 50
 texture = SubResource( 2 )
 centered = false
 region_enabled = true
-region_rect = Rect2( 0, 0, 1024, 1024 )
+region_rect = Rect2( 0, 0, 1600, 1600 )
 _sections_unfolded = [ "Offset", "Region", "Transform" ]
 
 [node name="Center" type="Position2D" parent="."]
 
-position = Vector2( 498.554, 62.681 )
+position = Vector2( 806, 203 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="Dominoes" type="Node2D" parent="."]
 
 _sections_unfolded = [ "Transform" ]
+
+[node name="Domino" parent="Dominoes" instance=ExtResource( 2 )]
+
+position = Vector2( 1734, 683 )
 
 [node name="UnusedDominoes" type="Node2D" parent="."]
 
@@ -74,7 +79,8 @@ _sections_unfolded = [ "Transform" ]
 
 [node name="CameraTarget" type="Position2D" parent="."]
 
-position = Vector2( 497.554, 502.881 )
+editor/display_folded = true
+position = Vector2( 805, 856 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="Camera2D" type="Camera2D" parent="CameraTarget"]
@@ -104,6 +110,7 @@ _sections_unfolded = [ "Limit", "Smoothing" ]
 
 [node name="Score" type="Panel" parent="CameraTarget/Camera2D"]
 
+editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.5
 anchor_right = 0.0
@@ -173,9 +180,9 @@ anchor_top = 0.5
 anchor_right = 0.0
 anchor_bottom = 0.5
 margin_left = -258.0
-margin_top = 346.0
+margin_top = 304.0
 margin_right = 259.0
-margin_bottom = 416.0
+margin_bottom = 423.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -209,10 +216,10 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = -207.0
-margin_top = 211.0
-margin_right = 212.0
-margin_bottom = 369.0
+margin_left = -223.0
+margin_top = 131.0
+margin_right = 224.0
+margin_bottom = 321.0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 2
@@ -223,7 +230,7 @@ _sections_unfolded = [ "Visibility" ]
 [node name="Pos1" type="Position2D" parent="CameraTarget/Camera2D/Panel"]
 
 position = Vector2( 60, 20 )
-script = ExtResource( 3 )
+script = ExtResource( 4 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="TimerPos" type="Timer" parent="CameraTarget/Camera2D/Panel/Pos1"]
@@ -236,7 +243,7 @@ autostart = false
 [node name="Pos2" type="Position2D" parent="CameraTarget/Camera2D/Panel"]
 
 position = Vector2( 160, 20 )
-script = ExtResource( 3 )
+script = ExtResource( 4 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="TimerPos" type="Timer" parent="CameraTarget/Camera2D/Panel/Pos2"]
@@ -249,7 +256,7 @@ autostart = false
 [node name="Pos3" type="Position2D" parent="CameraTarget/Camera2D/Panel"]
 
 position = Vector2( 260, 20 )
-script = ExtResource( 3 )
+script = ExtResource( 4 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="TimerPos" type="Timer" parent="CameraTarget/Camera2D/Panel/Pos3"]
@@ -262,7 +269,7 @@ autostart = false
 [node name="Pos4" type="Position2D" parent="CameraTarget/Camera2D/Panel"]
 
 position = Vector2( 360, 20 )
-script = ExtResource( 3 )
+script = ExtResource( 4 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="TimerPos" type="Timer" parent="CameraTarget/Camera2D/Panel/Pos4"]
@@ -312,7 +319,7 @@ round_precision = 8
 
 [node name="Path2D" type="Path2D" parent="."]
 
-position = Vector2( 498.554, 63.681 )
+position = Vector2( 806, 202 )
 curve = SubResource( 5 )
 _sections_unfolded = [ "Transform" ]
 
@@ -329,7 +336,7 @@ _sections_unfolded = [ "Transform", "Z" ]
 
 [node name="Sprite" type="Sprite" parent="Path2D/PathFollow2D"]
 
-texture = ExtResource( 4 )
+texture = ExtResource( 5 )
 
 [connection signal="timeout" from="CameraTarget/Camera2D/Panel/Pos1/TimerPos" to="CameraTarget/Camera2D/Panel/Pos1" method="_on_TimerPos_timeout"]
 
