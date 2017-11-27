@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Scripts/Domino.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Sprites/domino.png" type="Texture" id=2]
@@ -8,16 +8,6 @@
 
 custom_solver_bias = 0.0
 extents = Vector2( 36.0991, 72.1598 )
-
-[sub_resource type="RectangleShape2D" id=2]
-
-custom_solver_bias = 0.0
-extents = Vector2( 49.5146, 51.6746 )
-
-[sub_resource type="RectangleShape2D" id=3]
-
-custom_solver_bias = 0.0
-extents = Vector2( 49.5146, 51.1476 )
 
 [node name="Domino" type="Area2D"]
 
@@ -33,6 +23,7 @@ _sections_unfolded = [ "Offset", "Pickable", "Transform" ]
 
 [node name="Sprite" type="Sprite" parent="."]
 
+editor/display_folded = true
 scale = Vector2( 0.7, 0.7 )
 texture = ExtResource( 2 )
 centered = false
@@ -118,50 +109,16 @@ _sections_unfolded = [ "Rect", "custom_colors", "custom_fonts" ]
 position = Vector2( 0, 74.1724 )
 shape = SubResource( 1 )
 
-[node name="TopPickableDetection" type="Area2D" parent="."]
-
-editor/display_folded = true
-visible = false
-position = Vector2( 0, 105.594 )
-input_pickable = true
-gravity_vec = Vector2( 0, 1 )
-gravity = 98.0
-linear_damp = 0.1
-angular_damp = 1.0
-audio_bus_override = false
-audio_bus_name = "Master"
-_sections_unfolded = [ "Pickable", "Transform" ]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="TopPickableDetection"]
-
-position = Vector2( 1.58112, -50.5958 )
-shape = SubResource( 2 )
-
-[node name="BottomPickableDetection" type="Area2D" parent="."]
-
-editor/display_folded = true
-visible = false
-position = Vector2( 0, 105.594 )
-input_pickable = true
-gravity_vec = Vector2( 0, 1 )
-gravity = 98.0
-linear_damp = 0.1
-angular_damp = 1.0
-audio_bus_override = false
-audio_bus_name = "Master"
-_sections_unfolded = [ "Pickable", "Transform" ]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BottomPickableDetection"]
-
-position = Vector2( 1.05408, 52.1769 )
-shape = SubResource( 3 )
-
 [node name="Tween" type="Tween" parent="."]
 
 playback_process_mode = 1
 playback/active = false
 playback/repeat = false
 playback/speed = 1.0
+
+[connection signal="area_entered" from="." to="." method="_on_Domino_area_entered"]
+
+[connection signal="area_exited" from="." to="." method="_on_Domino_area_exited"]
 
 [connection signal="mouse_entered" from="." to="." method="_on_Domino_mouse_entered"]
 

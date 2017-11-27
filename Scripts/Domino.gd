@@ -3,6 +3,7 @@ extends Node2D
 var panel_anchor
 var values = {"top" : 0, "bottom" : 0}
 var unique_id
+var over_placed
 
 signal _on_dom_can_move
 signal _on_mouse_over_top
@@ -26,8 +27,10 @@ func reset_pos_and_rot():
 	$Tween.interpolate_property(self, "position", self.position, Vector2(0, 0), 0.5, Tween.TRANS_SINE, Tween.EASE_OUT)
 	$Tween.interpolate_property($Sprite, "rotation_deg", $Sprite.rotation_deg, 0, 0.5, Tween.TRANS_SINE, Tween.EASE_OUT)
 	$Tween.start()
+	$PickableZone.rotation_deg = 0
 	
 	set_clear_color()
+	over_placed = false
 
 func reparent_to(new_parent, at_pos):
 	get_parent().call("start_timer")
@@ -89,3 +92,15 @@ func _on_BottomPickableDetection_mouse_entered():
 
 func _on_BottomPickableDetection_mouse_exited():
 	emit_signal("on_mouse_over_bottom", false, false, self)
+
+
+func _on_Domino_area_entered( area ):
+	if not area.is_pickable():
+		over_placed = true
+		printt(unique_id, "over_placed")
+
+
+func _on_Domino_area_exited( area ):
+	if not area.is_pickable():
+		over_placed = false
+		printt(unique_id, "NOT over_placed")

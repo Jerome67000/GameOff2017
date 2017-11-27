@@ -49,14 +49,22 @@ func set_domino_color():
 
 func is_out_of_limit():
 	if must_magnet:
-		if selected_dom.get_node("Sprite/Bottom").position.x < 0 or selected_dom.get_node($Sprite/Bottom).position.x > $Background.region_rect.size.x or selected_dom.get_node($Sprite/Bottom).position.y < 0 or selected_dom.get_node($Sprite/Bottom).position.y > $Background.region_rect.size.y:
+		if selected_dom.get_node("Sprite/Bottom").global_position.x < 0:
 			return true
-			
-	return false
+		if selected_dom.get_node("Sprite/Bottom").global_position.x > $Background.region_rect.size.x:
+			return true
+		if selected_dom.get_node("Sprite/Bottom").global_position.y < 0:
+			return true
+		if selected_dom.get_node("Sprite/Bottom").global_position.y > $Background.region_rect.size.y:
+			return true
+		if selected_dom.over_placed:
+			return true
+	else:
+		return false
 
 func _on_mouse_over_domino(is_over, domino):
 	if not mouse_pressed:
-		printt("_on_mouse_over_domino", "is_over: " + str(is_over), domino.unique_id)
+		#printt("_on_mouse_over_domino", "is_over: " + str(is_over), domino.unique_id)
 		if is_over:
 			selected_dom = domino
 		else:
@@ -76,10 +84,10 @@ func add_point_to_path(domino):
 	
 	var dom_rot = domino.get_node("Sprite").rotation_deg
 	if dom_rot == 90:
-		var to_add = Vector2(dom_scaled_size, 0)
+		var to_add = Vector2(dom_scaled_size.y, 0)
 		last_point -= to_add
 	elif dom_rot == -90:
-		var to_add = Vector2(dom_scaled_size, 0)
+		var to_add = Vector2(dom_scaled_size.y, 0)
 		last_point += to_add
 	elif dom_rot == 180 or dom_rot == -180:
 		var to_add = Vector2(0, dom_scaled_size.y)
@@ -88,7 +96,6 @@ func add_point_to_path(domino):
 		var to_add = Vector2(0, dom_scaled_size.y)
 		last_point += to_add
 		
-	printt("last ", last_point)
 	$Path2D.curve.add_point(last_point)
 	
 	
@@ -136,6 +143,7 @@ func manage_mouse_motion():
 		must_magnet = false
 		if selected_dom != null:
 			selected_dom.get_node("Sprite").rotation_deg = 0
+			selected_dom.get_node("PickableZone").rotation_deg = 0
 	
 	if must_magnet:
 		selected_dom.global_position = magnet_pos
@@ -148,7 +156,6 @@ func manage_mouse_motion():
 func magnet_to(pos):
 	must_magnet = true
 	magnet_pos = pos
-	print("manget_to()")
 
 #####################
 #### INIT SCENE
@@ -168,6 +175,7 @@ func create_initial_dominoes():
 		last_bottom_value = domino.values.bottom
 		
 		domino.position = Vector2($Center.position.x, $Center.position.y + (num*dom_scaled_size.y))
+		domino.set_pickable(false)
 		$Dominoes.add_child(domino)
 		$Path2D.curve.add_point(Vector2(0, ((1+num)*dom_scaled_size.y)))
 		
@@ -205,6 +213,7 @@ func check_for_magnet():
 			if from_bot_dist < magnet_threshold:
 				magnet_to(last_bottom.global_position)
 				selected_dom.get_node("Sprite").rotation_deg = 0 + get_last_posed_dom().get_dom_rotation()
+				selected_dom.get_node("PickableZone").rotation_deg = 0 + get_last_posed_dom().get_dom_rotation()
 			else:
 				must_magnet = false
 	
@@ -212,6 +221,7 @@ func check_for_magnet():
 			if from_botright_dist < magnet_threshold:
 				magnet_to(last_bottom_right.global_position)
 				selected_dom.get_node("Sprite").rotation_deg = -90 + get_last_posed_dom().get_dom_rotation()
+				selected_dom.get_node("PickableZone").rotation_deg = -90 + get_last_posed_dom().get_dom_rotation()
 			else:
 				must_magnet = false
 				
@@ -220,5 +230,6 @@ func check_for_magnet():
 				magnet_to(last_bottom_left.global_position)
 #				selected_dom.rot_min_90() TODO
 				selected_dom.get_node("Sprite").rotation_deg = 90 + get_last_posed_dom().get_dom_rotation()
+				selected_dom.get_node("PickableZone").rotation_deg = 90 + get_last_posed_dom().get_dom_rotation()
 			else:
 				must_magnet = false
