@@ -212,16 +212,14 @@ func check_for_magnet():
 		if from_bot_dist < from_botleft_dist and from_bot_dist < from_botright_dist:
 			if from_bot_dist < magnet_threshold:
 				magnet_to(last_bottom.global_position)
-				selected_dom.get_node("Sprite").rotation_deg = 0 + get_last_posed_dom().get_dom_rotation()
-				selected_dom.get_node("PickableZone").rotation_deg = 0 + get_last_posed_dom().get_dom_rotation()
+				selected_dom.rotation_deg = 0 + get_last_posed_dom().rotation_deg
 			else:
 				must_magnet = false
 	
 		if from_botright_dist < from_bot_dist and from_botright_dist < from_botleft_dist:
 			if from_botright_dist < magnet_threshold:
 				magnet_to(last_bottom_right.global_position)
-				selected_dom.get_node("Sprite").rotation_deg = -90 + get_last_posed_dom().get_dom_rotation()
-				selected_dom.get_node("PickableZone").rotation_deg = -90 + get_last_posed_dom().get_dom_rotation()
+				selected_dom.rotation_deg = -90 + get_last_posed_dom().rotation_deg
 			else:
 				must_magnet = false
 				
@@ -229,7 +227,6 @@ func check_for_magnet():
 			if from_botleft_dist < magnet_threshold:
 				magnet_to(last_bottom_left.global_position)
 #				selected_dom.rot_min_90() TODO
-				selected_dom.get_node("Sprite").rotation_deg = 90 + get_last_posed_dom().get_dom_rotation()
-				selected_dom.get_node("PickableZone").rotation_deg = 90 + get_last_posed_dom().get_dom_rotation()
+				selected_dom.rotation_deg = 90 + get_last_posed_dom().rotation_deg
 			else:
 				must_magnet = false

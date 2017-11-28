@@ -108,6 +108,7 @@ _sections_unfolded = [ "Rect", "custom_colors", "custom_fonts" ]
 
 position = Vector2( 0, 74.1724 )
 shape = SubResource( 1 )
+_sections_unfolded = [ "Transform" ]
 
 [node name="Tween" type="Tween" parent="."]
 
