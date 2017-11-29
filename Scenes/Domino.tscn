@@ -23,92 +23,106 @@ _sections_unfolded = [ "Offset", "Pickable", "Transform" ]
 
 [node name="Sprite" type="Sprite" parent="."]
 
-editor/display_folded = true
 scale = Vector2( 0.7, 0.7 )
 texture = ExtResource( 2 )
 centered = false
 offset = Vector2( -54, 0 )
 _sections_unfolded = [ "Offset", "Transform", "Visibility" ]
 
-[node name="Top" type="Position2D" parent="Sprite"]
-
-position = Vector2( -0.239197, 0 )
-_sections_unfolded = [ "Transform" ]
-
-[node name="TopLeft" type="Position2D" parent="Sprite"]
-
-position = Vector2( -54.5132, 56 )
-
-[node name="TopRight" type="Position2D" parent="Sprite"]
-
-position = Vector2( 53.4868, 56 )
-
-[node name="BottomLeft" type="Position2D" parent="Sprite"]
-
-position = Vector2( -54.2392, 153.586 )
-
-[node name="BottomRight" type="Position2D" parent="Sprite"]
-
-position = Vector2( 53.7608, 153.586 )
-
-[node name="Bottom" type="Position2D" parent="Sprite"]
-
-position = Vector2( -0.513199, 212 )
-_sections_unfolded = [ "Transform" ]
-
-[node name="TopLabel" type="Label" parent="Sprite"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 50.079
-margin_top = 9.59656
-margin_right = 139.079
-margin_bottom = 108.597
-rect_rotation = 90.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-size_flags_horizontal = 1
-size_flags_vertical = 4
-custom_fonts/font = ExtResource( 3 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-align = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Rect", "custom_colors", "custom_fonts" ]
-
-[node name="BottomLabel" type="Label" parent="Sprite"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 51.0
-margin_top = 114.0
-margin_right = 139.0
-margin_bottom = 213.0
-rect_rotation = 90.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-mouse_filter = 2
-size_flags_horizontal = 1
-size_flags_vertical = 4
-custom_fonts/font = ExtResource( 3 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-align = 1
-percent_visible = 1.0
-lines_skipped = 0
-max_lines_visible = -1
-_sections_unfolded = [ "Rect", "custom_colors", "custom_fonts" ]
-
 [node name="PickableZone" type="CollisionShape2D" parent="."]
 
 position = Vector2( 0, 74.1724 )
 shape = SubResource( 1 )
 _sections_unfolded = [ "Transform" ]
+
+[node name="Positions" type="Node2D" parent="."]
+
+[node name="Top" type="Position2D" parent="Positions"]
+
+position = Vector2( -0.167438, 0 )
+scale = Vector2( 0.7, 0.7 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="TopLeft" type="Position2D" parent="Positions"]
+
+position = Vector2( -38.1592, 39.2 )
+scale = Vector2( 0.7, 0.7 )
+
+[node name="TopRight" type="Position2D" parent="Positions"]
+
+position = Vector2( 37.4408, 39.2 )
+scale = Vector2( 0.7, 0.7 )
+
+[node name="BottomLeft" type="Position2D" parent="Positions"]
+
+position = Vector2( -37.9674, 107.51 )
+scale = Vector2( 0.7, 0.7 )
+
+[node name="BottomRight" type="Position2D" parent="Positions"]
+
+position = Vector2( 37.6326, 107.51 )
+scale = Vector2( 0.7, 0.7 )
+
+[node name="Bottom" type="Position2D" parent="Positions"]
+
+position = Vector2( -0.359239, 148.4 )
+scale = Vector2( 0.7, 0.7 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="BottomCenter" type="Position2D" parent="Positions"]
+
+position = Vector2( -0.967441, 107.51 )
+scale = Vector2( 0.7, 0.7 )
+
+[node name="TopLabel" type="Label" parent="."]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 35.0
+margin_top = 6.0
+margin_right = 99.0
+margin_bottom = 75.0
+rect_rotation = 90.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Rect", "custom_colors", "custom_fonts" ]
+
+[node name="BottomLabel" type="Label" parent="."]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 34.0
+margin_top = 79.0
+margin_right = 99.0
+margin_bottom = 147.0
+rect_rotation = 90.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+size_flags_horizontal = 1
+size_flags_vertical = 4
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+_sections_unfolded = [ "Rect", "custom_colors", "custom_fonts" ]
 
 [node name="Tween" type="Tween" parent="."]
 

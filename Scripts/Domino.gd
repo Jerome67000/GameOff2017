@@ -16,9 +16,9 @@ func set_values(top, bottom):
 	values.bottom = bottom
 	
 	if top > 0:
-		$Sprite/TopLabel.text = str(top)
+		$TopLabel.text = str(top)
 	if bottom > 0:
-		$Sprite/BottomLabel.text = str(bottom)
+		$BottomLabel.text = str(bottom)
 	
 func bind_panel_anchor(anchor):
 	panel_anchor = anchor
@@ -42,9 +42,9 @@ func _deferred_reparent_to(new_parent, at_pos):
 	
 func droped():
 	get_parent().call("start_timer")
-	var dom_size = $Sprite.get_item_rect().size
-	var dom_scale = $Sprite.scale
-	self.edit_set_pivot(Vector2(0, dom_size.y*dom_scale.y*0.5))
+#	var dom_size = $Sprite.get_item_rect().size
+#	var dom_scale = $Sprite.scale
+#	self.edit_set_pivot(Vector2(0, dom_size.y*dom_scale.y*0.5))
 	$Tween.interpolate_property(self, "scale", self.scale, Vector2(0, 0), 1, Tween.TRANS_SINE, Tween.EASE_OUT)
 	$Tween.interpolate_property(self, "rotation_deg", self.rotation, 360, 1, Tween.TRANS_SINE, Tween.EASE_OUT)
 	$Tween.interpolate_property($Sprite, "modulate", $Sprite.modulate, Color($Sprite.modulate.r, $Sprite.modulate.g, $Sprite.modulate.b, 0), 1, Tween.TRANS_SINE, Tween.EASE_OUT)

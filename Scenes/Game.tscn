@@ -1,27 +1,18 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Scripts/Game.gd" type="Script" id=1]
-[ext_resource path="res://Scenes/Domino.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Assets/Fonts/OpenSans-Bold.ttf" type="DynamicFontData" id=3]
-[ext_resource path="res://Scripts/Spawner.gd" type="Script" id=4]
-[ext_resource path="res://Assets/Sprites/dot.png" type="Texture" id=5]
-
-[sub_resource type="Gradient" id=1]
-
-offsets = PoolRealArray( 0, 0.508876, 1 )
-colors = PoolColorArray( 0.112426, 0.112426, 0.112426, 1, 1, 1, 1, 1, 0, 0, 0, 1 )
-
-[sub_resource type="GradientTexture" id=2]
-
-gradient = SubResource( 1 )
-width = 1600
+[ext_resource path="res://Assets/Sprites/bg.png" type="Texture" id=2]
+[ext_resource path="res://Scenes/Domino.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Assets/Fonts/OpenSans-Bold.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://Scripts/Spawner.gd" type="Script" id=5]
+[ext_resource path="res://Assets/Sprites/dot.png" type="Texture" id=6]
 
 [sub_resource type="DynamicFont" id=3]
 
 size = 18
 use_mipmaps = true
 use_filter = true
-font_data = ExtResource( 3 )
+font_data = ExtResource( 4 )
 _sections_unfolded = [ "Extra Spacing", "Font", "Settings" ]
 
 [sub_resource type="DynamicFont" id=4]
@@ -29,16 +20,15 @@ _sections_unfolded = [ "Extra Spacing", "Font", "Settings" ]
 size = 32
 use_mipmaps = true
 use_filter = true
-font_data = ExtResource( 3 )
+font_data = ExtResource( 4 )
 _sections_unfolded = [ "Font", "Settings" ]
 
 [sub_resource type="Curve2D" id=5]
 
 bake_interval = 5.0
 _data = {
-"points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0 )
+"points": PoolVector2Array(  )
 }
-_sections_unfolded = [ "Resource" ]
 
 [node name="Game" type="Node2D"]
 
@@ -53,7 +43,7 @@ point_speed = 50
 
 [node name="Background" type="Sprite" parent="."]
 
-texture = SubResource( 2 )
+texture = ExtResource( 2 )
 centered = false
 region_enabled = true
 region_rect = Rect2( 0, 0, 1600, 1600 )
@@ -68,7 +58,7 @@ _sections_unfolded = [ "Transform" ]
 
 _sections_unfolded = [ "Transform" ]
 
-[node name="Domino" parent="Dominoes" instance=ExtResource( 2 )]
+[node name="Domino" parent="Dominoes" instance=ExtResource( 3 )]
 
 position = Vector2( 1734, 683 )
 
@@ -79,7 +69,6 @@ _sections_unfolded = [ "Transform" ]
 
 [node name="CameraTarget" type="Position2D" parent="."]
 
-editor/display_folded = true
 position = Vector2( 805, 856 )
 _sections_unfolded = [ "Transform" ]
 
@@ -230,7 +219,7 @@ _sections_unfolded = [ "Visibility" ]
 [node name="Pos1" type="Position2D" parent="CameraTarget/Camera2D/Panel"]
 
 position = Vector2( 60, 20 )
-script = ExtResource( 4 )
+script = ExtResource( 5 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="TimerPos" type="Timer" parent="CameraTarget/Camera2D/Panel/Pos1"]
@@ -243,7 +232,7 @@ autostart = false
 [node name="Pos2" type="Position2D" parent="CameraTarget/Camera2D/Panel"]
 
 position = Vector2( 160, 20 )
-script = ExtResource( 4 )
+script = ExtResource( 5 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="TimerPos" type="Timer" parent="CameraTarget/Camera2D/Panel/Pos2"]
@@ -256,7 +245,7 @@ autostart = false
 [node name="Pos3" type="Position2D" parent="CameraTarget/Camera2D/Panel"]
 
 position = Vector2( 260, 20 )
-script = ExtResource( 4 )
+script = ExtResource( 5 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="TimerPos" type="Timer" parent="CameraTarget/Camera2D/Panel/Pos3"]
@@ -269,7 +258,7 @@ autostart = false
 [node name="Pos4" type="Position2D" parent="CameraTarget/Camera2D/Panel"]
 
 position = Vector2( 360, 20 )
-script = ExtResource( 4 )
+script = ExtResource( 5 )
 _sections_unfolded = [ "Transform" ]
 
 [node name="TimerPos" type="Timer" parent="CameraTarget/Camera2D/Panel/Pos4"]
@@ -319,7 +308,6 @@ round_precision = 8
 
 [node name="Path2D" type="Path2D" parent="."]
 
-position = Vector2( 806, 202 )
 curve = SubResource( 5 )
 _sections_unfolded = [ "Transform" ]
 
@@ -336,7 +324,7 @@ _sections_unfolded = [ "Transform", "Z" ]
 
 [node name="Sprite" type="Sprite" parent="Path2D/PathFollow2D"]
 
-texture = ExtResource( 5 )
+texture = ExtResource( 6 )
 
 [connection signal="timeout" from="CameraTarget/Camera2D/Panel/Pos1/TimerPos" to="CameraTarget/Camera2D/Panel/Pos1" method="_on_TimerPos_timeout"]
 

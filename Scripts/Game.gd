@@ -12,7 +12,7 @@ var dom_scaled_size
 
 export var magnet_threshold = 20
 export var INITIAL_DOM_COUNT = 4
-export var point_speed = 100
+export var point_speed = 200
 
 onready var anchors = {"1" : $CameraTarget/Camera2D/Panel/Pos1, "2" : $CameraTarget/Camera2D/Panel/Pos2, "3" : $CameraTarget/Camera2D/Panel/Pos3, "4" : $CameraTarget/Camera2D/Panel/Pos4}
 
@@ -49,13 +49,14 @@ func set_domino_color():
 
 func is_out_of_limit():
 	if must_magnet:
-		if selected_dom.get_node("Sprite/Bottom").global_position.x < 0:
+		var bot = selected_dom.get_node("Positions/Bottom")
+		if bot.global_position.x < 0:
 			return true
-		if selected_dom.get_node("Sprite/Bottom").global_position.x > $Background.region_rect.size.x:
+		if bot.global_position.x > $Background.region_rect.size.x:
 			return true
-		if selected_dom.get_node("Sprite/Bottom").global_position.y < 0:
+		if bot.global_position.y < 0:
 			return true
-		if selected_dom.get_node("Sprite/Bottom").global_position.y > $Background.region_rect.size.y:
+		if bot.global_position.y > $Background.region_rect.size.y:
 			return true
 		if selected_dom.over_placed:
 			return true
@@ -71,32 +72,34 @@ func _on_mouse_over_domino(is_over, domino):
 			selected_dom = null
 	
 func _on_dom_placed(domino):
-	domino.get_node("Sprite").modulate = Color(1,1,1)
+	domino.set_clear_color()
 	domino.reparent_to($Dominoes, magnet_pos)
 	$CameraTarget.position = magnet_pos + Vector2(0, 180)
 	add_point_to_path(domino)
 	selected_dom = null
 	score += 1
 	$CameraTarget/Camera2D/Score/LabelScore.text = str(score)
+	
+	for point in range(0, $Path2D.curve.get_point_count()):
+		printt("point: ", $Path2D.curve.get_point_position(point))
 
 func add_point_to_path(domino):
-	var last_point = $Path2D.curve.get_point_position($Path2D.curve.get_point_count()-1)
-	
-	var dom_rot = domino.get_node("Sprite").rotation_deg
-	if dom_rot == 90:
-		var to_add = Vector2(dom_scaled_size.y, 0)
-		last_point -= to_add
-	elif dom_rot == -90:
-		var to_add = Vector2(dom_scaled_size.y, 0)
-		last_point += to_add
-	elif dom_rot == 180 or dom_rot == -180:
-		var to_add = Vector2(0, dom_scaled_size.y)
-		last_point -= to_add
-	else:
-		var to_add = Vector2(0, dom_scaled_size.y)
-		last_point += to_add
+#	var last_point = $Path2D.curve.get_point_position($Path2D.curve.get_point_count()-1)
+#
+#	if domino.rotation_deg == 90:
+#		var to_add = Vector2(dom_scaled_size.y, 0)
+#		last_point -= to_add
+#	elif domino.rotation_deg == -90:
+#		var to_add = Vector2(dom_scaled_size.y, 0)
+#		last_point += to_add
+#	elif domino.rotation_deg == 180 or domino.rotation_deg == -180:
+#		var to_add = Vector2(0, dom_scaled_size.y)
+#		last_point -= to_add
+#	else:
+#		var to_add = Vector2(0, dom_scaled_size.y)
+#		last_point += to_add
 		
-	$Path2D.curve.add_point(last_point)
+	$Path2D.curve.add_point(domino.get_node("Positions/BottomCenter").global_position)
 	
 	
 func connect_timer_spawn():
@@ -177,7 +180,7 @@ func create_initial_dominoes():
 		domino.position = Vector2($Center.position.x, $Center.position.y + (num*dom_scaled_size.y))
 		domino.set_pickable(false)
 		$Dominoes.add_child(domino)
-		$Path2D.curve.add_point(Vector2(0, ((1+num)*dom_scaled_size.y)))
+		$Path2D.curve.add_point(domino.get_node("Positions/BottomCenter").global_position)
 		
 func create_pickable_dominoes():
 	for num in range(INITIAL_DOM_COUNT):
@@ -199,10 +202,10 @@ func add_new_domino(anchor):
 #####################
 func check_for_magnet():
 	if selected_dom != null:
-		var curr_top = selected_dom.get_node("Sprite/Top")
-		var last_bottom = get_last_posed_dom().get_node("Sprite/Bottom")
-		var last_bottom_left = get_last_posed_dom().get_node("Sprite/BottomLeft")
-		var last_bottom_right = get_last_posed_dom().get_node("Sprite/BottomRight")
+		var curr_top = selected_dom.get_node("Positions/Top")
+		var last_bottom = get_last_posed_dom().get_node("Positions/Bottom")
+		var last_bottom_left = get_last_posed_dom().get_node("Positions/BottomLeft")
+		var last_bottom_right = get_last_posed_dom().get_node("Positions/BottomRight")
 			
 		
 		var from_bot_dist = curr_top.global_position.distance_to(last_bottom.global_position)
